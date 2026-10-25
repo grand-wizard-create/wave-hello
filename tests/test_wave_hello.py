@@ -30,8 +30,8 @@ from conftest import (
     wait_until_still,
 )
 
-VERSION = "0.1.0"
-WHATS_NEW = "First version."
+VERSION = "0.2.0"
+WHATS_NEW = "Waves both ways."
 RATE_HZ = 50
 MAX_TICKS = 5000
 STARTS = {"rest": REST_DEG, "mid": MID_DEG}
@@ -120,18 +120,26 @@ def test_whole_run_is_about_ten_seconds_from_rest(main):
     assert 8.0 <= seconds <= 12.0, seconds
 
 
-def test_the_wave_moves_only_the_wrist_and_waves_wide(main):
+def test_waves_both_ways(main):
+    """The wrist nods and turns while the base swings side to side, a quarter period apart."""
     arm = FakeArm(MID_DEG)
     run_whole(main, arm)
     wave = [joints for _, joints, _, label in arm.targets if label == "wave"]
     hello = [main.HELLO_DEG[name] for name in main.JOINTS]
+    moving = {"shoulder_pan", "wrist_flex", "wrist_roll"}
     for i, name in enumerate(main.JOINTS):
         values = [pose[i] for pose in wave]
-        if name == "wrist_flex":
-            assert max(values) == pytest.approx(hello[i] + 15.0, abs=0.1)
-            assert min(values) == pytest.approx(hello[i] - 15.0, abs=0.1)
+        if name in moving:
+            assert max(values) == pytest.approx(hello[i] + 15.0, abs=0.1), name
+            assert min(values) == pytest.approx(hello[i] - 15.0, abs=0.1), name
         else:
-            assert values == pytest.approx([hello[i]] * len(values))
+            assert values == pytest.approx([hello[i]] * len(values)), name
+    pan, flex = main.JOINTS.index("shoulder_pan"), main.JOINTS.index("wrist_flex")
+    assert wave[0][pan] == pytest.approx(hello[pan] + 15.0)      # the base starts at one side
+    assert wave[0][flex] == pytest.approx(hello[flex])           # while the wrist is level
+    quarter = round(main.PERIOD_S * RATE_HZ / 4)
+    assert wave[quarter][pan] == pytest.approx(hello[pan], abs=0.5)
+    assert wave[quarter][flex] == pytest.approx(hello[flex] + 15.0, abs=0.5)
 
 
 def test_nothing_moves_in_setup(main):

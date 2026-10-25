@@ -1,6 +1,6 @@
 [project]
 name = "wave-hello"
-version = "0.1.0"
+version = "0.2.0"
 description = "Your arm waves hello, then folds back to rest. A gentle first app."
 requires-python = ">=3.12"
 dependencies = ["monorobot"]
@@ -10,7 +10,7 @@ author = "grand-wizard-create"
 description = "Your arm waves hello, then folds back to rest. A gentle first app."
 license = "Apache-2.0"
 network = false
-whats_new = "First version."
+whats_new = "Waves both ways."
 
 [build-system]
 requires = ["hatchling"]

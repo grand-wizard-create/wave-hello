@@ -29,8 +29,13 @@ HELLO_DEG: dict[str, float] = {
     "shoulder_pan": 0.0, "shoulder_lift": -40.0, "elbow_flex": 45.0, "wrist_flex": -15.0, "wrist_roll": 0.0,
 }
 # The wave, per joint: (amplitude in degrees, phase in periods) of a sine around HELLO_DEG.
-# 15 degrees over PERIOD_S peaks at 43 degrees a second.
-WAVE_DEG: dict[str, tuple[float, float]] = {"wrist_flex": (15.0, 0.0)}
+# 15 degrees over PERIOD_S peaks at 43 degrees a second. The wrist nods while the base swings side
+# to side a quarter period apart, and the wrist turns with the nod: it waves both ways.
+WAVE_DEG: dict[str, tuple[float, float]] = {
+    "wrist_flex": (15.0, 0.0),
+    "shoulder_pan": (15.0, 0.25),
+    "wrist_roll": (15.0, 0.0),
+}
 PERIOD_S = 2.2
 WAVES = 3
 GRIPPER_OPEN = 0.6           # 0 closed, 1 open

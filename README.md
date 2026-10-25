@@ -1,7 +1,7 @@
 # Wave hello
 
-Your arm rises, waves hello three times, then folds back to rest. It takes about 10 seconds and
-makes a gentle first app for a new arm.
+Your arm rises and waves hello three times, nodding and swinging side to side, then folds back to
+rest. It takes about 10 seconds and makes a gentle first app for a new arm.
 
 ## What it runs on
 
